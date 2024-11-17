@@ -32,8 +32,6 @@ struct Team_Attributes {
 };
 struct Team_Attributes teams[NUM_TEAMS];
 
-//Defining the Structure Team Attributes
-
 
 //Function Prototypes
 void display_menu();
@@ -137,12 +135,10 @@ void enroll_club(){
     }
 }
 
-
 //Add New Player to A Team Function
 void add_player(){
      //Printing the Function
     printf("*Add A New Player To The Team*\n\n");
-
 
     //Initializing Local Variables
     int np_kit, i, np_bday_date, np_bday_month, np_bday_year, np_age;
@@ -234,7 +230,6 @@ void add_player(){
     printf("Player %s has been added to the team %s.\n", np_name, teams[i-1].team_name);
 }
 
-
 //Search and Update Information Function
 void search_update() {
      //Printing the Function
@@ -302,6 +297,9 @@ void search_update() {
 
 //Club Statistics Function
 void display_club_statistics() {
+    int total_players = 0 ;
+    int sum_age = 0 ;
+
     printf("\n*Club Statistics*\n\n");
     printf("Total No. of Teams: %d\n",curr_enrolled_teams);
     for (int i = 0; i < curr_enrolled_teams; i++) {
@@ -313,8 +311,12 @@ void display_club_statistics() {
                     teams[i].players[j].name, teams[i].players[j].age.age,   
                     teams[i].players[j].kit_number, teams[i].players[j].position,
                     teams[i].players[j].age.birth_date, teams[i].players[j].age.birth_month, teams[i].players[j].age.birth_year);
+            total_players++;
+            sum_age+=teams[i].players[j].age.age;
         }
     }
+    float avg_age = sum_age/total_players;
+    printf("The average age of the players is: %.2f",avg_age);
 }
 
 //Handing Error Function
@@ -322,7 +324,7 @@ void handle_error() {
     printf("Invalid input. Please try again.\n");
 }
 
-//Getting Current Year
+//Getting Current Year Function
 int get_curr_year(){
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -403,14 +405,18 @@ void update_player(int i, int j){
                 }
                 u_name[strcspn(u_name, "\n")] = '\0';
 
-
                 // Check for Duplicate Player with Same Name
                 if (check_name(u_name)==false) {
-                    printf("A player with the name %s already exists in this team.\n", teams[i].players[j].name);
+                    printf("A player with the name %s already exists in this team.\n", u_name);
                     return;
                 }
+                strcpy(teams[i].players[j].name, u_name);
                 printf("Player Name Updated Successfully.\n\n");
                 break;
+                
+                // teams[i].players[j].name[strcspn(teams[i].players[j].name, "\n")] = '\0';
+                // printf("Player Name Updated Successfully.\n\n");
+                // break;
 
             case 2:
                 //Getting Updated Kit Number
